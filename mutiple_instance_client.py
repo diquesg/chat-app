@@ -66,4 +66,6 @@ def client_wrap(address):
     # Loop de envio de mensagens
     send_message(addr, client_socket)
 
-client_wrap(addr)
+
+if __name__ == "__main__":
+    client_wrap(addr)
