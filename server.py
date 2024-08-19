@@ -1,7 +1,7 @@
 import socket
 import threading
 
-addr = ("0.0.0.0",6322)
+addr = ("localhost", 6322)
 data_limit = 2048
 
 print("Criando servidor...")
