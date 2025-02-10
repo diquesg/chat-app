@@ -6,16 +6,16 @@ data_limit = 2048
 
 print("Criando servidor...")
 
-server_socket = socket.create_server(addr)  # Cria um novo socket de servidor definido como "server_socket"
-server_socket.listen()  # Coloca o servidor em estado de espera por solicitações
+server_socket = socket.create_server(addr)
+server_socket.listen()
 print("Servidor criado. Aguardando conexões...")
 
 clientes_conectados = {}
 
-def client_handler(client_socket, client_address, nickname):  # Lida com mensagens do cliente e transmite para os outros clientes
+def client_handler(client_socket, client_address, nickname):
     while True:
         try:
-            message = client_socket.recv(data_limit).decode("UTF-8")  # Recebe a mensagem
+            message = client_socket.recv(data_limit).decode("UTF-8")
             if message:
                 print(f"Mensagem de {nickname}: {message}")
             else:
@@ -23,7 +23,7 @@ def client_handler(client_socket, client_address, nickname):  # Lida com mensage
             server_broadcast(message, client_socket, nickname)
         except Exception:
             break
-    try: # Remove o cliente da lista e fecha o socket
+    try:
         del clientes_conectados[client_socket]
         client_socket.close()
     except ValueError:
@@ -32,7 +32,7 @@ def client_handler(client_socket, client_address, nickname):  # Lida com mensage
     disconnected_message(disconnected)
 
 def server_broadcast(message, sender_socket, nickname):
-    for cliente in list(clientes_conectados):  # Criar uma cópia da lista para evitar modificação durante a iteração
+    for cliente in list(clientes_conectados):
         if cliente != sender_socket:
             try:
                 formatted_message = f"{nickname}: {message}"
@@ -47,7 +47,7 @@ def server_broadcast(message, sender_socket, nickname):
                     pass
 
 def disconnected_message(message):
-    for cliente in list(clientes_conectados):  # Criar uma cópia da lista para evitar modificação durante a iteração
+    for cliente in list(clientes_conectados):
             try:
                 cliente.sendall(message.encode("UTF-8"))
                 print("Mensagem transmitida.")
@@ -61,7 +61,7 @@ def disconnected_message(message):
 
 def server_run():
     while True:
-        client_socket, client_address = server_socket.accept()  # Aceita conexões de clientes
+        client_socket, client_address = server_socket.accept()
         nickname = client_socket.recv(data_limit).decode('utf-8')
         clientes_conectados[client_socket] = nickname
         print(f"Nova conexão de {nickname}")
