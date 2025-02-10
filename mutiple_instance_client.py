@@ -25,7 +25,7 @@ def client_wrap(address):
             connection_try(client_socket, address)
         print("Cliente conectado.")
 
-    client_socket = socket.socket() # Criação do cliente
+    client_socket = socket.socket()
     create_client(addr)
     client_socket.sendall(nickname.encode('utf-8'))
 
@@ -44,10 +44,8 @@ def client_wrap(address):
             try:
                 message = client_socket.recv(2048).decode("UTF-8")
                 if message:
-                    # Move o cursor para a próxima linha e exibe a mensagem recebida
                     sys.stdout.write('\r' + ' ' * len(input_prompt) + '\r')
                     print(message)
-                    # Reimprime o prompt de entrada para o usuário continuar digitando
                     sys.stdout.write(input_prompt)
                     sys.stdout.flush()
                 else:
@@ -56,14 +54,11 @@ def client_wrap(address):
                 print(f"Erro ao receber mensagem: {e}")
                 break
 
-    # Define o prompt de entrada
     input_prompt = "Mensagem: "
 
-    # Inicia a thread para receber mensagens
     rcv_message = threading.Thread(target=receive_message, daemon=True)
     rcv_message.start()
 
-    # Loop de envio de mensagens
     send_message(addr, client_socket)
 
 
